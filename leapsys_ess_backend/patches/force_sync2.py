@@ -19,3 +19,17 @@ def execute():
     # Manually insert the DocType into the database
     doc = frappe.get_doc(doc_dict)
     doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+    
+    # Seed default values for the Single DocType
+    frappe.db.commit() # Commit the DocType schema first
+    
+    settings = frappe.get_single("Leapsys ESS App Settings")
+    settings.company_name = "LEAPSYS"
+    settings.primary_color = "#0056b3"
+    settings.secondary_color = "#e9ecef"
+    settings.enable_geofencing = 1
+    settings.enable_offline_mode = 0
+    settings.enable_service_module = 1
+    settings.enable_sales_module = 1
+    settings.enable_chatbot = 0
+    settings.save(ignore_permissions=True)
