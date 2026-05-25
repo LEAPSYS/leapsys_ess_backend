@@ -1,0 +1,14 @@
+[project]
+name = "leapsys_ess_backend"
+version = "0.0.1"
+description = "Employee Self Service and Service App for LEAPSYS"
+authors = [
+    { name = "LEAPSYS", email = "info@leapsys.net"}
+]
+dependencies = [
+    "frappe~=15.0.0"
+]
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
