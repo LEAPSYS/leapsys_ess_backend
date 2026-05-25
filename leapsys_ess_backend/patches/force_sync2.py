@@ -10,7 +10,8 @@ def execute():
     # Get the exact absolute path to the JSON file relative to THIS patch file
     # This patch is at apps/leapsys_ess_backend/leapsys_ess_backend/patches/force_sync2.py
     patch_dir = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(os.path.dirname(patch_dir), "doctype", "leapsys_ess_app_settings", "leapsys_ess_app_settings.json")
+    # The JSON is in the triple-nested leapsys_ess_backend module folder
+    json_path = os.path.join(os.path.dirname(patch_dir), "leapsys_ess_backend", "doctype", "leapsys_ess_app_settings", "leapsys_ess_app_settings.json")
     
     with open(json_path, "r") as f:
         doc_dict = json.load(f)
