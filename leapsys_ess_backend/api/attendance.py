@@ -2,6 +2,8 @@ import frappe
 from frappe.utils import nowdate, nowtime
 import math
 
+from leapsys_ess_backend.api.utils import get_current_employee
+
 def calculate_distance(lat1, lon1, lat2, lon2):
     # Basic Haversine implementation for distance
     R = 6371e3
@@ -18,12 +20,13 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     return R * c # meters
 
 @frappe.whitelist()
-def mark_attendance(employee, log_type, lat, lon, is_offline_sync=False, original_timestamp=None):
+def mark_attendance(log_type, lat, lon, is_offline_sync=False, original_timestamp=None):
     """
     Mark attendance, validating geofence coordinates against the employee's assigned location or branch.
-    Handles offline sync natively.
+    Handles offline sync natively. Uses secure ERPNext session authorization.
     """
     try:
+        employee = get_current_employee()
         # Example Validation:
         # Ensure employee is near the office (Mock radius 100 meters)
         # In a real scenario, fetch 'lat' and 'lon' from Employee or Branch

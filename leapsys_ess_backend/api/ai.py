@@ -1,12 +1,15 @@
 import frappe
 
+from leapsys_ess_backend.api.utils import get_current_employee
+
 @frappe.whitelist()
-def chatbot_query(user_query, employee):
+def chatbot_query(user_query):
     """
     Process natural language queries using a generic AI wrapper.
     Returns parsed intent or direct answers for the mobile app UI.
     """
     try:
+        employee = get_current_employee()
         # Here we would integrate with an LLM provider or Dialogflow
         # For boilerplate, returning a mock response
         query = user_query.lower()

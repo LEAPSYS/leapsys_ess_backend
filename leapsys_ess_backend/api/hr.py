@@ -1,10 +1,12 @@
 import frappe
 from frappe import _
+from leapsys_ess_backend.api.utils import get_current_employee
 
 @frappe.whitelist()
-def get_leave_balances(employee):
+def get_leave_balances():
     """Fetch leave balances for an employee"""
     try:
+        employee = get_current_employee()
         balances = frappe.get_all(
             "Leave Allocation",
             filters={"employee": employee, "docstatus": 1},
@@ -15,9 +17,10 @@ def get_leave_balances(employee):
         return {"success": False, "error": str(e)}
 
 @frappe.whitelist()
-def submit_expense_claim(employee, expense_type, amount, date, description):
+def submit_expense_claim(expense_type, amount, date, description):
     """Submit a new expense claim"""
     try:
+        employee = get_current_employee()
         expense = frappe.get_doc({
             "doctype": "Expense Claim",
             "employee": employee,
@@ -34,9 +37,10 @@ def submit_expense_claim(employee, expense_type, amount, date, description):
         return {"success": False, "error": str(e)}
 
 @frappe.whitelist()
-def get_salary_slips(employee):
+def get_salary_slips():
     """Fetch salary slips for the employee"""
     try:
+        employee = get_current_employee()
         slips = frappe.get_all(
             "Salary Slip",
             filters={"employee": employee, "docstatus": 1},
