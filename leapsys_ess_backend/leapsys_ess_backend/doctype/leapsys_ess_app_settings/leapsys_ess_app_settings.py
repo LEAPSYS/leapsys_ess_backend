@@ -1,4 +1,4 @@
 from frappe.model.document import Document
 
-class LeapsysEssAppSettings(Document):
+class LeapsysESSAppSettings(Document):
     pass
