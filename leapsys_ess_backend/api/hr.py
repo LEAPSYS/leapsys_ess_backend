@@ -21,17 +21,20 @@ def submit_expense_claim(expense_type, amount, date, description):
     """Submit a new expense claim"""
     try:
         employee = get_current_employee()
+        employee_doc = frappe.get_doc("Employee", employee)
         expense = frappe.get_doc({
             "doctype": "Expense Claim",
             "employee": employee,
-            "posting_date": date,
+            "company": employee_doc.company,
+            "posting_date": date or frappe.utils.today(),
             "expenses": [{
                 "expense_type": expense_type,
                 "amount": amount,
+                "expense_date": date or frappe.utils.today(),
                 "description": description
             }]
         })
-        expense.insert()
+        expense.insert(ignore_permissions=True)
         return {"success": True, "message": "Expense Claim submitted successfully.", "name": expense.name}
     except Exception as e:
         return {"success": False, "error": str(e)}

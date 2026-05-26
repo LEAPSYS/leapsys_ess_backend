@@ -10,13 +10,15 @@ HEADERS = {
 
 endpoints = [
     {"name": "Settings (get_app_settings)", "url": "/leapsys_ess_backend.api.settings.get_app_settings", "method": "GET"},
-    {"name": "AI (chatbot_query)", "url": "/leapsys_ess_backend.api.ai.chatbot_query", "method": "POST", "data": {"user_query": "leave", "employee": "EMP-001"}},
+    {"name": "AI (chatbot_query)", "url": "/leapsys_ess_backend.api.ai.chatbot_query", "method": "POST", "data": {"user_query": "leave"}},
     {"name": "AI (process_expense_receipt)", "url": "/leapsys_ess_backend.api.ai.process_expense_receipt", "method": "POST", "data": {"file_url": "/private/files/test.png"}},
-    {"name": "Attendance (mark_attendance)", "url": "/leapsys_ess_backend.api.attendance.mark_attendance", "method": "POST", "data": {"employee": "EMP-001", "log_type": "IN", "lat": 28.7042, "lon": 77.1026}},
-    {"name": "HR (get_leave_balances)", "url": "/leapsys_ess_backend.api.hr.get_leave_balances", "method": "GET", "params": {"employee": "EMP-001"}},
-    {"name": "HR (get_salary_slips)", "url": "/leapsys_ess_backend.api.hr.get_salary_slips", "method": "GET", "params": {"employee": "EMP-001"}},
-    {"name": "Service (get_maintenance_visits)", "url": "/leapsys_ess_backend.api.service.get_maintenance_visits", "method": "GET", "params": {"employee": "EMP-001", "date": "2026-05-26"}},
-    {"name": "Service (get_bag_inventory)", "url": "/leapsys_ess_backend.api.service.get_bag_inventory", "method": "GET", "params": {"employee": "EMP-001"}},
+    {"name": "Attendance (mark_attendance)", "url": "/leapsys_ess_backend.api.attendance.mark_attendance", "method": "POST", "data": {"log_type": "IN", "lat": 28.7042, "lon": 77.1026}},
+    {"name": "HR (get_leave_balances)", "url": "/leapsys_ess_backend.api.hr.get_leave_balances", "method": "GET"},
+    {"name": "HR (get_salary_slips)", "url": "/leapsys_ess_backend.api.hr.get_salary_slips", "method": "GET"},
+    {"name": "Service (get_maintenance_visits)", "url": "/leapsys_ess_backend.api.service.get_maintenance_visits", "method": "GET", "params": {"date": "2026-05-26"}},
+    {"name": "Service (get_bag_inventory)", "url": "/leapsys_ess_backend.api.service.get_bag_inventory", "method": "GET"},
+    {"name": "Projects (get_projects)", "url": "/leapsys_ess_backend.api.projects.get_projects", "method": "GET"},
+    {"name": "Sales (get_customers)", "url": "/leapsys_ess_backend.api.sales.get_customers", "method": "GET"},
     {"name": "Payment (razorpay_webhook)", "url": "/leapsys_ess_backend.api.payment.razorpay_webhook", "method": "POST", "data": {"status": "ok"}}
 ]
 
