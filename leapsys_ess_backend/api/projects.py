@@ -26,7 +26,7 @@ def get_tasks():
         tasks = frappe.get_all(
             "Task",
             filters={"status": ["!=", "Completed"]},
-            fields=["name", "subject", "project", "status", "exp_end_date"]
+            fields=["name", "subject", "project", "status", "exp_end_date", "custom_enable_geofencing", "custom_latitude", "custom_longitude", "custom_geofence_radius"]
         )
         return {"success": True, "data": tasks}
     except Exception as e:
@@ -45,8 +45,8 @@ def update_task_status(task_name, status):
         return {"success": False, "error": str(e)}
 
 @frappe.whitelist()
-def log_timesheet(project, task, hours, description):
-    """Log timesheet hours against a task"""
+def log_timesheet(project, task, hours, description, start_lat=None, start_lon=None, end_lat=None, end_lon=None):
+    """Log timesheet hours against a task, with GPS tracking points"""
     try:
         employee = get_current_employee()
         ts = frappe.get_doc({
@@ -57,10 +57,14 @@ def log_timesheet(project, task, hours, description):
                 "hours": float(hours),
                 "project": project,
                 "task": task,
-                "description": description
+                "description": description,
+                "custom_start_latitude": start_lat,
+                "custom_start_longitude": start_lon,
+                "custom_end_latitude": end_lat,
+                "custom_end_longitude": end_lon
             }]
         })
-        ts.insert()
+        ts.insert(ignore_permissions=True)
         return {"success": True, "message": "Timesheet logged successfully", "name": ts.name}
     except Exception as e:
         return {"success": False, "error": str(e)}
