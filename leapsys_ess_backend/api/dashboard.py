@@ -45,7 +45,7 @@ def get_dashboard_summary():
         summary["salary_slips"] = slip[0].start_date.strftime("%b %Y") if slip and slip[0].start_date else "None"
         
         # Visits (today)
-        visits = frappe.db.count("Maintenance Visit", {"maintenance_date": today(), "docstatus": ("<", 2)})
+        visits = frappe.db.count("Maintenance Visit", {"mntc_date": today(), "docstatus": ("<", 2)})
         summary["visits"] = f"{visits} Today"
         
         # Approvals (pending)
