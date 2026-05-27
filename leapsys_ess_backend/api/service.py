@@ -32,14 +32,19 @@ def get_maintenance_visits(date):
         return {"success": False, "error": str(e)}
 
 @frappe.whitelist()
-def create_maintenance_visit(customer, date, purpose):
+def create_maintenance_visit(customer, date, purpose, item_code=None, serial_no=None):
     try:
         employee = get_current_employee()
+        purposes = [{"item_code": purpose, "description": "Created from ESS App"}]
+        # If item_code and serial_no are provided from the new Serial No flow
+        if item_code:
+            purposes = [{"item_code": item_code, "serial_no": serial_no, "description": purpose or "Service"}]
+            
         visit = frappe.get_doc({
             "doctype": "Maintenance Visit",
             "customer": customer,
             "mntc_date": date,
-            "purposes": [{"item_code": purpose, "description": "Created from ESS App"}]
+            "purposes": purposes
         })
         visit.insert(ignore_permissions=True)
         return {"success": True, "message": "Visit created successfully", "name": visit.name}
@@ -47,7 +52,7 @@ def create_maintenance_visit(customer, date, purpose):
         return {"success": False, "error": str(e)}
 
 @frappe.whitelist()
-def create_issue(customer, subject, description):
+def create_issue(customer, subject, description, item_code=None, serial_no=None):
     try:
         issue = frappe.get_doc({
             "doctype": "Issue",
@@ -57,6 +62,11 @@ def create_issue(customer, subject, description):
             "status": "Open",
             "raised_by": frappe.session.user
         })
+        if item_code:
+            issue.item_code = item_code
+        if serial_no:
+            issue.serial_no = serial_no
+            
         issue.insert(ignore_permissions=True)
         return {"success": True, "message": "Service Call created successfully", "name": issue.name}
     except Exception as e:
