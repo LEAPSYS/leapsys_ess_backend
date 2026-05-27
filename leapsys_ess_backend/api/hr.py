@@ -54,3 +54,45 @@ def get_salary_slips():
         return {"success": True, "data": slips}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+@frappe.whitelist()
+def get_leave_types():
+    try:
+        types = frappe.get_all("Leave Type", fields=["name"])
+        return {"success": True, "data": types}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@frappe.whitelist()
+def create_leave_application(leave_type, from_date, to_date, reason):
+    try:
+        employee = get_current_employee()
+        employee_doc = frappe.get_doc("Employee", employee)
+        leave = frappe.get_doc({
+            "doctype": "Leave Application",
+            "employee": employee,
+            "company": employee_doc.company,
+            "leave_type": leave_type,
+            "from_date": from_date,
+            "to_date": to_date,
+            "description": reason,
+            "status": "Open"
+        })
+        leave.insert(ignore_permissions=True)
+        return {"success": True, "message": "Leave Application submitted successfully", "name": leave.name}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@frappe.whitelist()
+def get_my_expenses():
+    try:
+        employee = get_current_employee()
+        expenses = frappe.get_all(
+            "Expense Claim",
+            filters={"employee": employee},
+            fields=["name", "posting_date", "total_claimed_amount", "total_sanctioned_amount", "status"],
+            order_by="posting_date desc"
+        )
+        return {"success": True, "data": expenses}
+    except Exception as e:
+        return {"success": False, "error": str(e)}

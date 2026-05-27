@@ -25,3 +25,13 @@ def get_activity_feed():
         return {"success": True, "data": communications}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+@frappe.whitelist()
+def get_unread_notifications():
+    """Fetch unread notifications for current user"""
+    try:
+        user = frappe.session.user
+        count = frappe.db.count("Notification Log", {"for_user": user, "read": 0})
+        return {"success": True, "count": count}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
