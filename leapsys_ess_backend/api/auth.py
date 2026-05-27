@@ -53,3 +53,15 @@ def logout():
         "success": True,
         "message": _("Logged Out Successfully")
     }
+
+@frappe.whitelist()
+def check_auth():
+    if frappe.session.user == 'Guest':
+        frappe.throw(_("Not logged in"), frappe.AuthenticationError)
+        
+    employee = frappe.get_all("Employee", filters={"user_id": frappe.session.user}, fields=["name", "employee_name", "image"])
+    
+    frappe.local.response["message"] = {
+        "success": True,
+        "employee": employee[0] if employee else None
+    }
